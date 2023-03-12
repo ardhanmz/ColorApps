@@ -10,22 +10,34 @@ import UIKit
 
 class ColorTableViewController: UIViewController {
     
-    
+    var color: [UIColor] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        createRandomColor()
     }
     
-    
+    func createRandomColor() {
+        for _ in 1..<50 {
+            color.append(UIColor (red: randomColorFloat(), green: randomColorFloat(), blue: randomColorFloat(), alpha: 1))
+        }
+    }
+    func randomColorFloat() -> CGFloat {
+        return CGFloat.random(in: 0...1.0)
+    }
     
 }
 extension ColorTableViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 50
+        return color.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return UITableViewCell()
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "colorCell") else {
+            return UITableViewCell()
+        }
+        cell.backgroundColor = color[indexPath.row]
+        return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         performSegue(withIdentifier: "toColorDetailViewController", sender: nil)
