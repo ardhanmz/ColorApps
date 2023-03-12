@@ -25,6 +25,10 @@ class ColorTableViewController: UIViewController {
     func randomColorFloat() -> CGFloat {
         return CGFloat.random(in: 0...1.0)
     }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let destinationVC = segue.destination as! ColorDetailViewController
+        destinationVC.color = sender as? UIColor
+    }
     
 }
 extension ColorTableViewController: UITableViewDelegate, UITableViewDataSource {
@@ -40,6 +44,7 @@ extension ColorTableViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        performSegue(withIdentifier: "toColorDetailViewController", sender: nil)
+        let selectedColor = color[indexPath.row]
+        performSegue(withIdentifier: "toColorDetailViewController", sender: selectedColor)
     }
 }
